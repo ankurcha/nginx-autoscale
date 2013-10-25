@@ -1,9 +1,22 @@
 <component name="ProjectDictionaryState">
   <dictionary name="achauhan">
     <words>
+      <w>adduser</w>
       <w>autoscale</w>
+      <w>autoscaling</w>
+      <w>backends</w>
+      <w>brightcove</w>
+      <w>failcount</w>
+      <w>getpgid</w>
+      <w>healthcheck</w>
+      <w>httpcheck</w>
+      <w>libpcre</w>
+      <w>libssl</w>
+      <w>loadbalancer</w>
       <w>nacli</w>
       <w>nginx</w>
+      <w>wget</w>
+      <w>xzvf</w>
     </words>
   </dictionary>
 </component>

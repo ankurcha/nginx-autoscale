@@ -1,3 +1,6 @@
-class
-  # To change this template use File | Settings | File Templates.
+class Utils
+
+  def renderTemplate(config, template)
+
+  end
 end

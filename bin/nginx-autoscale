@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.join(__FILE__, "..", "..", "lib")
+
+require 'nginx/autoscale'
+
+Nginx::Autoscale::CLI.start(ARGV)

@@ -1,0 +1,13 @@
+{
+    "backends": [
+        {"asg_name": "collector-production-v231", "host_opts": "weight=1"},
+        {"asg_name": "collector-production-v232", "host_opts": "weight=2"}
+    ],
+    "healthcheck_path": "/private/status",
+    "ssl": true,
+    "ssl_cert": "s3://com.brightcove.analytics.production/certs/collector.pem",
+    "ssl_cert_key": "s3://com.brightcove.analytics.production/certs/collector_key.pem",
+    "public_dns": "metrics.brightcove.com",
+    "app_port": 44080,
+    "endpoint_matchers": ["/"]
+}
