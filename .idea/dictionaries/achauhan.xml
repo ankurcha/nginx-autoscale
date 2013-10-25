@@ -16,6 +16,7 @@
       <w>loadbalancer</w>
       <w>nacli</w>
       <w>nginx</w>
+      <w>securerandom</w>
       <w>wget</w>
       <w>xzvf</w>
     </words>
