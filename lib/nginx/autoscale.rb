@@ -30,6 +30,8 @@ module Nginx
         `adduser --system --no-create-home --disabled-login --disabled-password --group nginx`
         Dir.chdir('/tmp') do
           puts 'download nginx'
+          FileUtils.remove_file('/tmp/nginx-1.2.6.tar.gz', true)
+          FileUtils.remove_dir('/tmp/nginx-1.2.6', true)
           `wget http://nginx.org/download/nginx-1.2.6.tar.gz`
 
           puts 'extracting nginx'
