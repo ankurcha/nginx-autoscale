@@ -10,6 +10,7 @@
       <w>getpgid</w>
       <w>healthcheck</w>
       <w>httpcheck</w>
+      <w>initd</w>
       <w>libpcre</w>
       <w>libssl</w>
       <w>loadbalancer</w>

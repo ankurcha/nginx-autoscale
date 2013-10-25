@@ -46,7 +46,7 @@ module Nginx
             `mkdir -p /opt/nginx/conf/conf.d /opt/nginx/conf/sites-available /opt/nginx/conf/sites-enabled /opt/nginx/conf/certs`
             # copy init.d startup script
             puts 'installing init.d script'
-            File.cp(File.join(File.dirname(__FILE__), "/autoscale/templates/nginx.initd"), '/etc/init.d/nginx')
+            File.cp(File.join(File.dirname(__FILE__), '/autoscale/templates/nginx.initd'), '/etc/init.d/nginx')
             `chmod a+x /etc/init.d/nginx`
           end
         end
