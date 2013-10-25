@@ -1,0 +1,61 @@
+user <%= @user %>
+worker_processes <%= @worker_processes %>;
+pid /var/run/nginx.pid
+
+events {
+    worker_connections 768;
+    multi_accept on;
+}
+
+http {
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    gzip on;
+    gzip_disable "msie6";
+}
+
+<% for @backend in @backend_list %>
+    upstream <%= @backend['name'] %> {
+        <% if @backend['httpcheck'] %>
+            <% if @backend['httpcheck']['enabled'] %>
+                healthcheck_enabled
+                <% if @backend['httpcheck']['delay']%> healthcheck_delay<%= @backend['healthcheck']['delay'] %>; <% end %>
+                <% if @backend['httpcheck']['timeout']%> healthcheck_timeout<%= @backend['healthcheck']['timeout'] %>; <% end %>
+                <% if @backend['httpcheck']['failcount']%> healthcheck_failcount<%= @backend['healthcheck']['failcount'] %>; <% end %>
+                <% if @backend['httpcheck']['send']%> healthcheck_timeout<%= @backend['healthcheck']['send'] %>; <% end %>
+                <% if @backend['httpcheck']['expected']%> healthcheck__expected<%= @backend['healthcheck']['expected'] %>; <% end %>
+                <% if @backend['httpcheck']['status']%> healthcheck_status <% end %>;
+            <% end %>
+        <% end %>
+        <% for @hosts in @backend['hosts'] %>
+        server <%= @host['name'] %> <%= @host['opts'] %>
+        <% end %>
+    }
+<% end %>
+
+http {
+<% for @server in @servers %>
+    server {
+        listen <%= @server['listen'] %>;
+        <% if @server['ssl'] %>
+        ssl on;
+        ssl_certificate <%= @server['ssl']['certificate'] %>;
+        ssl_certificate_key <%= @server['ssl']['certificate_key'] %>;
+        ssl_session_timeout <%= @server['ssl']['session_timeout'] %>;
+        ssl_protocols SSLv3 TLSv1;
+        ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
+        ssl_prefer_server_ciphers on;
+        <% end %>
+        <% if @server['keepalive_timeout']%> keepalive_timeout <%= @server['keepalive_timeout'] %>; <% end %>
+        <% if @server['name']%> server_name <%= @server['name'] %>; <% end %>
+        <% for @location in @server['locations'] %>
+            location <%= @location %> {
+                <% if @location['keepalive_timeout']%> keepalive_timeout <%= @location['keepalive_timeout'] %>; <% end %>
+                proxy_pass <%= @location['backend'] %>;
+            }
+        <% end %>
+    }
+<% end %>
+}
