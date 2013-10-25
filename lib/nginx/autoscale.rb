@@ -37,10 +37,10 @@ module Nginx
           Dir.chdir('/tmp/nginx-1.2.6') do
             # compile and install nginx to /opt/nginx
             puts 'configure nginx build'
-            `./configure --prefix=/opt/nginx --user=nginx --without-http_scgi_module --without-http_uwsgi_module --without-http_fastcgi_module --without-http_empty_gif_module --without-http_ssi_module --without-http_geo_module --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module --with-http_degradation_module --with-http_ssl_module 2>&amp;1`
+            `./configure --prefix=/opt/nginx --user=nginx --without-http_scgi_module --without-http_uwsgi_module --without-http_fastcgi_module --without-http_empty_gif_module --without-http_ssi_module --without-http_geo_module --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module --with-http_degradation_module --with-http_ssl_module`
 
             puts 'make and install nginx'
-            `make && make install 2>&amp;1`
+            `make && make install`
 
             puts 'configure nginx'
             `mkdir -p /opt/nginx/conf/conf.d /opt/nginx/conf/sites-available /opt/nginx/conf/sites-enabled /opt/nginx/conf/certs`
