@@ -57,8 +57,8 @@ module Nginx
 
     class Main
       def initialize(opts)
-        AWS.config(access_key_id: opts[:access_key],
-                   secret_access_key: opts[:secret_key])
+        AWS.config(:access_key_id => opts[:access_key],
+                   :secret_access_key => opts[:secret_key])
         @ec2 = AWS::EC2.new
         @auto_scaling = AWS::AutoScaling.new
         @s3 = AWS::S3.new
