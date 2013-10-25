@@ -1,6 +1,14 @@
 # Nginx::Autoscale
 
-TODO: Write a gem description
+This is a simple nginx reconfigure daemon that should be invoked using cron. This utility accepts a bunch
+of parameters.
+
+The utility watches the Elastic IP address (by pinging it). If the currently associated endpoint does not respond, the
+utility would try to steal the elastic ip. At the same time, the utility also fetches the config files from S3 location
+these configuration files define the backends being served. We then update (if needed) the current configuration of the
+loadbalancer configuration and reload it.
+
+Monitoring can be added if needed.
 
 ## Installation
 
@@ -18,7 +26,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+Usage:
+  nginx-autoscale update <options>
+
+Options:
+  [--access-key=AWS access key]
+  [--secret-key=AWS secret key]
+  [--bucket=S3 bucket containing all the configurations]
+  [--prefix=S3 prefix to watch]
+  [--elastic-ip=AWS Elastic IP to watch]
+  [--lb-health-path=Healthcheck path for the loadbalancer]  # Default: /ping
+  [--lb-health-port=Healthcheck port for the loadbalancer]  # Default: 12198
+```
 
 ## Contributing
 

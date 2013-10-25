@@ -9,10 +9,11 @@ module Nginx
     class CLI < Thor
 
       desc 'update <options>', 'run the nginx manager'
-      option :access_key, :banner => 'AWS access key'
-      option :secret_key, :banner => 'AWS secret key'
-      option :bucket, :banner => 'S3 bucket containing all the configurations'
-      option :prefix, :banner => 'S3 prefix to watch'
+      option :access_key,                         :banner => 'AWS access key'
+      option :secret_key,                         :banner => 'AWS secret key'
+      option :bucket,                             :banner => 'S3 bucket containing all the configurations'
+      option :prefix,                             :banner => 'S3 prefix to watch'
+      option :elastic_ip,                         :banner => 'AWS Elastic IP to watch'
       option :lb_health_path, :required => false, :banner => 'Healthcheck path for the loadbalancer', :default => '/ping'
       option :lb_health_port, :required => false, :banner => 'Healthcheck port for the loadbalancer', :default => '12198'
       def update(access_key, secret_key, bucket, prefix, elastic_ip, lb_health_path, lb_health_port)
