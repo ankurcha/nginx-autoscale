@@ -8,6 +8,25 @@ utility would try to steal the elastic ip. At the same time, the utility also fe
 these configuration files define the backends being served. We then update (if needed) the current configuration of the
 loadbalancer configuration and reload it.
 
+
+Configuration files
+Configuration are keyed by the filename and have the following format
+```json
+{
+    "backends": [
+        {"asg_name": "collector-production-v231", "host_opts": "weight=1"},
+        {"asg_name": "collector-production-v232", "host_opts": "weight=2"}
+    ],
+    "healthcheck_path": "/private/status",
+    "ssl": true,
+    "ssl_cert": "/certs/collector.pem",
+    "ssl_cert_key": "/certs/collector_key.pem",
+    "public_dns": "metrics.brightcove.com",
+    "app_port": 44080,
+    "endpoint_matchers": ["/"]
+}
+```
+
 Monitoring can be added if needed.
 
 ## Installation

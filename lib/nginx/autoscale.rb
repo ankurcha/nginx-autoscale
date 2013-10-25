@@ -2,6 +2,7 @@ require 'nginx/autoscale/version'
 require 'thor'
 require 'aws-sdk'
 require 'net/http'
+require 'securerandom'
 
 module Nginx
   module Autoscale
@@ -44,7 +45,7 @@ module Nginx
             # compile and install nginx to /opt/nginx
             `./configure --prefix=/opt/nginx --user=nginx #{module_commands.join(' ')}`
             `make && make install`
-            `mkdir -p /opt/nginx/conf/conf.d /opt/nginx/conf/sites-available /opt/nginx/conf/sites-enabled`
+            `mkdir -p /opt/nginx/conf/conf.d /opt/nginx/conf/sites-available /opt/nginx/conf/sites-enabled /opt/nginx/conf/certs`
             # copy init.d startup script
             File.cp File.join(File.dirname(__FILE__), "/autoscale/templates/nginx.initd"), '/etc/init.d/nginx'
             `chmod a+x /etc/init.d/nginx`
@@ -149,12 +150,28 @@ module Nginx
               :keepalive_timeout => '75s'
           }
         }
+        cert_file = "/etc/nginx/config/#{SecureRandom.uuid.to_s}.crt"
+        cert_key  = "/etc/nginx/config/#{SecureRandom.uuid.to_s}.key"
+        if json_map['ssl_cert'] && json_map['ssl_cert_key']
+          # download ssl certs and key
+          File.open(cert_file, 'w') do |file|
+            AWS::S3::S3Object.stream(json_map['ssl_cert'], @bucket) do |chunk|
+              file.write(chunk)
+            end
+          end
+          File.open(cert_key, 'w') do |file|
+            AWS::S3::S3Object.stream(json_map['ssl_cert_key'], @bucket) do |chunk|
+              file.write(chunk)
+            end
+          end
+        end
+
         server = {
             :listen => listen_ports,
             :server_name => json_map['public_dns'],
             :ssl => {
-                :certificate => json_map['ssl_cert'],
-                :certificate_key => json_map['ssl_cert_key'],
+                :certificate         => cert_file,
+                :certificate_key     => cert_key,
                 :ssl_session_timeout => '5m'
             },
             :locations => locations
