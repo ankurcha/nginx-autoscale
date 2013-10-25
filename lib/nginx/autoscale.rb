@@ -28,8 +28,12 @@ module Nginx
         `apt-get -y install libpcre3-dev libssl-dev`
         `adduser --system --no-create-home --disabled-login --disabled-password --group nginx`
         Dir.chdir('/tmp') do
+          puts 'download nginx'
           `wget http://nginx.org/download/nginx-1.2.6.tar.gz`
+
+          puts 'extracting nginx'
           `tar -xzvf nginx-1.2.6.tar.gz`
+
           Dir.chdir('/tmp/nginx-1.2.6') do
             module_commands = ['--without-http_scgi_module',
                                '--without-http_uwsgi_module',
@@ -42,12 +46,19 @@ module Nginx
                                '--without-mail_smtp_module',
                                '--with-http_degradation_module',
                                '--with-http_ssl_module']
+
             # compile and install nginx to /opt/nginx
+            puts 'configure nginx build'
             `./configure --prefix=/opt/nginx --user=nginx #{module_commands.join(' ')}`
+
+            puts 'make and install nginx'
             `make && make install`
+
+            puts 'configure nginx'
             `mkdir -p /opt/nginx/conf/conf.d /opt/nginx/conf/sites-available /opt/nginx/conf/sites-enabled /opt/nginx/conf/certs`
             # copy init.d startup script
-            File.cp File.join(File.dirname(__FILE__), "/autoscale/templates/nginx.initd"), '/etc/init.d/nginx'
+            puts 'installing init.d script'
+            File.cp(File.join(File.dirname(__FILE__), "/autoscale/templates/nginx.initd"), '/etc/init.d/nginx')
             `chmod a+x /etc/init.d/nginx`
           end
         end
