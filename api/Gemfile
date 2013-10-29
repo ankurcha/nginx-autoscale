@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'sinatra-contrib'
+gem 'thin'
+gem 'rack'
+gem 'rack-protection'
+gem 'json-schema'
+gem 'json'
+gem 'aws-sdk'
+
